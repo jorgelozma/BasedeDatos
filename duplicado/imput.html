@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Guardar Clave-Valor</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 40px;
+    }
+    .container {
+      position: relative;
+      max-width: 400px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-top: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      margin-top: 20px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <label for="keyInput">Clave:</label>
+    <input type="text" id="keyInput" placeholder="Introduce una clave">
+
+    <label for="valueInput">Valor:</label>
+    <input type="text" id="valueInput" placeholder="Introduce un valor">
+
+    <button onclick="guardarDatos()">Guardar</button>
+  </div>
+
+  <script>
+    function guardarDatos() {
+      const clave = document.getElementById("keyInput").value;
+      const valor = document.getElementById("valueInput").value;
+
+      if (clave && valor) {
+      
+        console.log(`Guardado: ${clave} = ${valor}`);
+
+
+        alert(`Se ha guardado: ${clave} = ${valor}`);
+      } else {
+        alert("Por favor, completa ambos campos.");
+      }
+    }
+  </script>
+
+</body>
+</html>

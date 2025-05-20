@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampeR SetaS</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: url('images/background.png') no-repeat center center/cover;
+      font-family: 'Courier New', Courier, monospace;
+      padding: 2rem 0;
+    }
+    .menu {
+      background-color: #d2b48c; /* marrón claro */
+      border-radius: 8px;
+      text-align: center;
+      height: 90vh;
+      aspect-ratio: 3/4;
+      max-width: 90vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      padding: 2rem;
+    }
+    .menu h1 {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+    }
+    .menu p {
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+    .divider {
+      border-top: 2px solid #8b0000;
+      margin: 1rem 0;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 0.5rem;
+    }
+    .icon {
+      width: 40px;
+      margin-top: 0.5rem;
+    }
+    .item {
+      display: flex;
+      justify-content: space-between;
+      margin: 0.5rem 0;
+      font-size: 1.2rem;
+    }
+    .footer {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #8b0000;
+    }
+    .address {
+      font-size: 0.8rem;
+      margin-top: 0.5rem;
+      color: #333;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="menu">
+    <div>
+      <h1>CampeR SetaS</h1>
+      <p>Nov. 2023</p>
+      <div class="divider"></div>
+
+      <div class="section">
+        <h2>Setas</h2>
+        <img src="images/coffee.png" alt="cafe" class="icon">
+        <div class="item"><span>Boletus Vanilla</span><span>3.00</span></div>
+        <div class="item"><span>Boletus 2</span><span>3.75</span></div>
+        <div class="item"><span>Boletus Spice</span><span>3.50</span></div>
+        <div class="item"><span>Boletus 3</span><span>4.00</span></div>
+        <div class="item"><span>Boletus x</span><span>4.50</span></div>
+      </div>
+
+      <div class="section">
+        <h2>Postres</h2>
+        <img src="images/cake_no_background.png" alt="pastel" class="icon">
+        <div class="item"><span>Donut de Boletus</span><span>1.50</span></div>
+        <div class="item"><span>Boletus Pie</span><span>2.75</span></div>
+        <div class="item"><span>Boletus solo</span><span>3.00</span></div>
+        <div class="item"><span>Boletus Roll</span><span>2.50</span></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="divider"></div>
+      <div class="footer">Visitar el arboreo</div>
+      <div class="address">123 La Seta Dos</div>
+    </div>
+  </div>
+
+</body>
+</html>
+
