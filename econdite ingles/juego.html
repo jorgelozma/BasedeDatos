@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>El escondite inglés regular</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f4f8;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+    }
+    .camino {
+      display: flex;
+      flex-direction: column-reverse;
+      width: 300px;
+      margin: 0 auto;
+      border: 2px solid #444;
+      padding: 5px;
+    }
+    .casilla {
+      height: 40px;
+      border: 1px solid #999;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background-color: white;
+    }
+    .jugador {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      text-align: center;
+      font-size: 12px;
+      color: white;
+    }
+    .jugador0 { background-color: red; }
+    .jugador1 { background-color: green; }
+    .jugador2 { background-color: blue; }
+    .botones, .info {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button {
+      margin: 5px;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .corazon {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <h1>El escondite inglés regular</h1>
+  <div class="camino" id="camino"></div>
+  <div class="botones" id="acciones"></div>
+  <div class="info" id="info"></div>
+
+  <script>
+    const camino = Array.from({ length: 10 }, () => []);
+    const jugadores = [
+      { pos: 0, corazon: false, accion: null },
+      { pos: 0, corazon: false, accion: null },
+      { pos: 0, corazon: false, accion: null }
+    ];
+    let dadosNegrosSalidos = [];
+
+    function renderCamino() {
+      const container = document.getElementById('camino');
+      container.innerHTML = '';
+      for (let i = camino.length - 1; i >= 0; i--) {
+        const casilla = document.createElement('div');
+        casilla.className = 'casilla';
+        jugadores.forEach((j, idx) => {
+          if (j.pos === i) {
+            const div = document.createElement('div');
+            div.className = `jugador jugador${idx}`;
+            div.textContent = j.corazon ? '♥' : idx;
+            casilla.appendChild(div);
+          }
+        });
+        container.appendChild(casilla);
+      }
+    }
+
+    function renderAcciones() {
+      const acciones = document.getElementById('acciones');
+      acciones.innerHTML = '';
+      jugadores.forEach((j, idx) => {
+        const div = document.createElement('div');
+        div.innerHTML = `<strong>Jugador ${idx}</strong><br>
+          <button onclick="elegir(${idx}, 'andar')">Andar</button>
+          <button onclick="elegir(${idx}, 'parar')">Pararse</button>`;
+        acciones.appendChild(div);
+      });
+    }
+
+    function elegir(jugador, accion) {
+      jugadores[jugador].accion = accion;
+      if (jugadores.every(j => j.accion)) {
+        turno();
+      }
+    }
+
+    function sacarDado() {
+      const bolsa = ['negro1', 'negro2', 'negro3', 'rojo'];
+      return bolsa[Math.floor(Math.random() * bolsa.length)];
+    }
+
+    function tirarDado(tipo) {
+      const dados = {
+        negro1: [1,1,1,1,2,2],
+        negro2: [1,1,1,1,0,0],
+        negro3: [1,1,0,0,0,0],
+        rojo: [1,1,1,1,1,0]
+      };
+      const caras = dados[tipo];
+      return caras[Math.floor(Math.random() * caras.length)];
+    }
+
+    function turno() {
+      const info = document.getElementById('info');
+      info.innerHTML = '';
+      const dado = sacarDado();
+      info.innerHTML += `Se sacó un dado: <strong>${dado}</strong><br>`;
+
+      jugadores.forEach((j, idx) => {
+        if (j.accion === 'parar') {
+          if (dado === 'rojo' && !j.corazon) {
+            j.corazon = true;
+            info.innerHTML += `Jugador ${idx} parado recibe un corazón ♥<br>`;
+          }
+        } else if (j.accion === 'andar') {
+          if (dado.startsWith('negro')) {
+            dadosNegrosSalidos.push(dado);
+            let avance = dadosNegrosSalidos.map(tirarDado).reduce((a,b) => a + b, 0);
+            j.pos = Math.min(9, j.pos + avance);
+            info.innerHTML += `Jugador ${idx} avanza ${avance} casillas<br>`;
+          } else if (dado === 'rojo') {
+            if (j.corazon) {
+              j.corazon = false;
+              info.innerHTML += `Jugador ${idx} pierde el corazón ♥<br>`;
+            } else {
+              const todosDados = [...dadosNegrosSalidos, 'rojo'];
+              let retroceso = todosDados.map(tirarDado).reduce((a,b) => a + b, 0);
+              j.pos = Math.max(0, j.pos - retroceso);
+              info.innerHTML += `Jugador ${idx} retrocede ${retroceso} casillas<br>`;
+            }
+          }
+        }
+        j.accion = null;
+      });
+
+      if (dadosNegrosSalidos.length === 3 || dado === 'rojo') {
+        dadosNegrosSalidos = [];
+        info.innerHTML += '<em>Se repone la bolsa de dados.</em><br>';
+      }
+
+      renderCamino();
+      renderAcciones();
+
+      const ganadores = jugadores.filter(j => j.pos >= 9);
+      if (ganadores.length > 0) {
+        info.innerHTML += `<strong>¡Ganador${ganadores.length > 1 ? 'es' : ''}: Jugador${ganadores.length > 1 ? 'es' : ''} ${jugadores.map((j, i) => j.pos >= 9 ? i : null).filter(i => i !== null).join(', ')}!</strong>`;
+        document.getElementById('acciones').innerHTML = '';
+      }
+    }
+
+    renderCamino();
+    renderAcciones();
+  </script>
+</body>
+</html>
